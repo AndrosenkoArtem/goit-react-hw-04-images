@@ -8,3 +8,4 @@ export const fetchPixabayApi = async (searchQuery, page, abortController) => {
   );
   return response.data.hits;
 };
+//

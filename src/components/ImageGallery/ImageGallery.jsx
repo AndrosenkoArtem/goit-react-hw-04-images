@@ -21,20 +21,17 @@ export const ImageGallery = ({ searchName }) => {
       return;
     }
     setStatus('pending');
-    // setPage(1);
+    setPage(1);
     setImages([]);
   }, [searchName]);
 
-  const prevSearchNameRef = useRef();
+  const prevPageRef = useRef();
 
   useEffect(() => {
     if (searchName.trim() === '') {
       return;
     }
-    if (prevSearchNameRef.current !== searchName) {
-      setPage(1);
-    }
-    prevSearchNameRef.current = searchName;
+
     const abortController = new AbortController();
     const fetchImages = async () => {
       try {
@@ -53,7 +50,10 @@ export const ImageGallery = ({ searchName }) => {
         setStatus('rejected');
       }
     };
-    fetchImages();
+    if (prevPageRef.current !== page) {
+      fetchImages();
+    }
+    prevPageRef.current = page;
     return () => abortController.abort();
   }, [page, searchName]);
 
